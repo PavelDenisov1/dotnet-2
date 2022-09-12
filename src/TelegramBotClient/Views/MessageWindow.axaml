@@ -12,10 +12,6 @@
                 HorizontalContentAlignment="Center"
                 Click="OnCloseClick"
                 Content="Ok" />
-		<!--<Image DockPanel.Dock="Left"
-               Width="32" Height="32"
-               VerticalAlignment="Top"
-               Source="i:Error.png"/>-->
 		<TextBlock Width="400"
                    Margin="10,0,0,0"
                    TextWrapping="Wrap"

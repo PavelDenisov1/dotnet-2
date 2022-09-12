@@ -21,7 +21,7 @@
 	</Window.Styles>
 	<Grid RowDefinitions="*, Auto"
 		  ColumnDefinitions="*, Auto">
-		<DataGrid Items="{Binding EventReminders}"
+		<DataGrid Items="{Binding RemindersView}"
 				  SelectedItem="{Binding SelectedReminder}"
 				  Margin="5" 
 				  IsReadOnly="True">
@@ -42,6 +42,12 @@
 			<Button Content="Add" Command="{Binding AddCommand}"/>
 			<Button Content="Edit" Command="{Binding EditCommand}"/>
 			<Button Content="Remove" Command="{Binding RemoveCommand}"/>
+		</StackPanel>
+		<StackPanel Margin="5" Orientation="Horizontal"
+					Grid.Row="1"
+					Grid.Column="0">
+			<TextBox Width="400" Height="29" Text="{Binding Filter}"/>
+			<Button Content="Filter" Command="{Binding FilterCommand}"/>
 		</StackPanel>
 	</Grid>
 </Window>

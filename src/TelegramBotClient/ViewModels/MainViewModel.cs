@@ -6,6 +6,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using TelegramBotClient.Models;
+using Avalonia.Collections;
 
 namespace TelegramBotClient.ViewModels
 {
@@ -16,13 +17,20 @@ namespace TelegramBotClient.ViewModels
         [Reactive]
         public Reminder SelectedReminder { get; set; }
 
-        public ObservableCollection<Reminder> EventReminders { get; }
+        [Reactive]
+        public string Filter { get; set; } = string.Empty;
+
+        public DataGridCollectionView RemindersView { get; }
+
+        public ObservableCollection<Reminder> Reminders { get; }
 
         public ReactiveCommand<Unit, Unit> AddCommand { get; }
 
         public ReactiveCommand<Unit, Unit> RemoveCommand { get; }
 
         public ReactiveCommand<Unit, Unit> EditCommand { get; }
+
+        public ReactiveCommand<Unit, Unit> FilterCommand { get; }
 
         public Interaction<ReminderViewModel, Unit> ShowDialogInteraction { get; } = new();
 
@@ -34,17 +42,18 @@ namespace TelegramBotClient.ViewModels
         {
             var canExecute = this.WhenAnyValue(
                 o => o.SelectedReminder, 
-                (Models.Reminder o) =>
+                (Reminder o) =>
                     o is not null);
 
             Client = client;
             var userReminders = client.GetEvents();
-            EventReminders = new ObservableCollection<Models.Reminder>();
+            Reminders = new ObservableCollection<Reminder>();
+            RemindersView = new DataGridCollectionView(Reminders);
 
             foreach (var reminder in userReminders.Reminders)
             {
                 var time = reminder.DateTime.ToDateTime().ToLocalTime();
-                EventReminders.Add(new Models.Reminder
+                Reminders.Add(new Reminder
                 {
                     Id = reminder.Id,
                     Name = reminder.Name,
@@ -57,17 +66,22 @@ namespace TelegramBotClient.ViewModels
             AddCommand = ReactiveCommand.CreateFromTask(AddImpl);
             EditCommand = ReactiveCommand.CreateFromTask(EditImpl, canExecute);
             RemoveCommand = ReactiveCommand.CreateFromTask(RemoveImpl, canExecute);
+            FilterCommand = ReactiveCommand.CreateFromTask(FilterImpl);
+            RemindersView.Filter = o =>
+                ((Reminder)o).Name.ToLower().Contains(Filter.ToLower()) || 
+                ((Reminder)o).Description.ToLower().Contains(Filter.ToLower())
+                ? true : false;
         }
 
         private async Task<Unit> AddImpl()
         {
-            await ShowDialogInteraction.Handle(new ReminderViewModel(Client, EventReminders));
+            await ShowDialogInteraction.Handle(new ReminderViewModel(Client, Reminders));
             return Unit.Default;
         }
 
         private async Task<Unit> EditImpl()
         {
-            await ShowDialogInteraction.Handle(new ReminderViewModel(Client, EventReminders, SelectedReminder));
+            await ShowDialogInteraction.Handle(new ReminderViewModel(Client, Reminders, SelectedReminder));
             return Unit.Default;
         }
 
@@ -86,16 +100,22 @@ namespace TelegramBotClient.ViewModels
 
             if (success is true)
             {
-                foreach (var reminder in EventReminders)
+                foreach (var reminder in Reminders)
                 {
                     if (reminder.Id == SelectedReminder.Id)
                     {
-                        EventReminders.Remove(reminder);
+                        Reminders.Remove(reminder);
                         break;
                     }
                 }
             }
             else await ShowErrorInteraction.Handle("Operation failed.");
+            return Unit.Default;
+        }
+
+        private async Task<Unit> FilterImpl()
+        {
+            RemindersView.Refresh();
             return Unit.Default;
         }
     }
