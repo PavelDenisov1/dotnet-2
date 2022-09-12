@@ -1,0 +1,41 @@
+<Window xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:vm="using:TelegramBotClient.ViewModels"
+             x:Class="TelegramBotClient.Views.LoginWindow"
+			 CanResize="False"
+			 WindowStartupLocation="CenterScreen"
+			 Title="Log in" Height="220" Width="360">
+
+	<Design.DataContext>
+		<vm:LoginViewModel/>
+	</Design.DataContext>
+	<Window.Styles>
+		<Style Selector="TextBox">
+			<Setter Property="Margin" Value="8"/>
+			<Setter Property="FontSize" Value="14"/>
+		</Style>
+		<Style Selector="TextBlock">
+			<Setter Property="Margin" Value="8"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="FontSize" Value="14"/>
+		</Style>
+		<Style Selector="Button">
+			<Setter Property="MinWidth" Value="50"/>
+			<Setter Property="MinHeight" Value="25"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="FontSize" Value="15"/>
+		</Style>
+	</Window.Styles>
+	<StackPanel>
+		<TextBlock HorizontalAlignment="Center"> Instruction</TextBlock>
+		<TextBlock> 1. Follow the link below</TextBlock>
+		<TextBlock> @observer001_bot</TextBlock>
+		<TextBlock> 2. Write a start message to the bot</TextBlock>
+		<TextBlock> 3. Enter the user name</TextBlock>
+		<StackPanel Orientation="Horizontal" >
+			<TextBox Width="280" Text="{Binding UserId}"/>
+			<Button Content="OK" Command="{Binding IdCommand}"/>
+		</StackPanel>
+	</StackPanel>
+</Window>

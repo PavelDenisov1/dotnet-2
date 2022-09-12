@@ -1,0 +1,25 @@
+<Window xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="TelegramBotClient.Views.MessageWindow"
+             CanResize="False"
+             SizeToContent="WidthAndHeight"
+             WindowStartupLocation="CenterOwner"
+             Title="Message">
+	<DockPanel Margin="10">
+		<Button DockPanel.Dock="Bottom"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Right"
+                HorizontalContentAlignment="Center"
+                Click="OnCloseClick"
+                Content="Ok" />
+		<!--<Image DockPanel.Dock="Left"
+               Width="32" Height="32"
+               VerticalAlignment="Top"
+               Source="i:Error.png"/>-->
+		<TextBlock Width="400"
+                   Margin="10,0,0,0"
+                   TextWrapping="Wrap"
+                   VerticalAlignment="Center"
+                   Name="Message"/>
+	</DockPanel>
+</Window>

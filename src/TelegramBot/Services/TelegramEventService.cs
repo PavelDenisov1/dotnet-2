@@ -77,12 +77,11 @@ namespace TelegramBot.Services
             return Task.FromResult(new EventOperationResponse { UserId = request.UserId, Result = true });
         }
 
-        public override Task<UserResponse> GetEvents(UserRequest request, ServerCallContext context)
+        public override Task<UserResponse> GetEvents(GetEventsRequest request, ServerCallContext context)
         {
-            var user = _usersRepository.FindUser(request.UserId);
             var reminders = new List<Event>();
             var response = new UserResponse();
-
+            var user = _usersRepository.FindUser(request.UserId);
             try
             {
                 foreach (var eventReminder in user.Events)
@@ -107,6 +106,16 @@ namespace TelegramBot.Services
             response.Reminders.AddRange(reminders);
             _logger.LogTrace($"Send events to User {request.UserId}");
             return Task.FromResult(response);
+        }
+
+        public override Task<EventOperationResponse> ContainsUser(UserRequest request, ServerCallContext context)
+        {
+            var user = _usersRepository.FindUser(request.UserId);
+            if (user is not null)
+            {
+                return Task.FromResult(new EventOperationResponse { UserId = request.UserId, Result = true });
+            }
+            return Task.FromResult(new EventOperationResponse { UserId = request.UserId, Result = false });
         }
     }
 }

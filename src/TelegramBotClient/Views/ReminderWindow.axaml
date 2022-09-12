@@ -1,0 +1,55 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:vm="using:TelegramBotClient.ViewModels"
+        x:Class="TelegramBotClient.Views.ReminderWindow"
+		WindowStartupLocation="CenterScreen"
+        Title="ReminderWindow" Height="368" Width="754">
+
+	<Design.DataContext>
+		<vm:ReminderViewModel/>
+	</Design.DataContext>
+	<Window.Styles>
+		<Style Selector="TextBox">
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="Margin" Value="8"/>
+		</Style>
+		<Style Selector="Label">
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="VerticalAlignment" Value="Top"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+		</Style>
+		<Style Selector="Button">
+			<Setter Property="MinWidth" Value="75"/>
+			<Setter Property="MinHeight" Value="25"/>
+			<Setter Property="VerticalAlignment" Value="Center"/>
+			<Setter Property="HorizontalAlignment" Value="Center"/>
+			<Setter Property="FontSize" Value="14"/>
+			<Setter Property="Margin" Value="10"/>
+		</Style>
+	</Window.Styles>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="Auto"/>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<Label Grid.Row="0" Grid.Column="0" Content="Name:"/>
+		<Label Grid.Row="1" Grid.Column="0" Content="Description:"/>
+		<Label Grid.Row="2" Grid.Column="0" Content="Date and time:"/>
+		<Label Grid.Row="3" Grid.Column="0" Content="Repeat period:"/>
+		<TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Name}"/>
+		<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Description}"/>
+		<TextBox Grid.Row="2" Grid.Column="1" Watermark="DD.MM.YYYY HH:mm:ss" Text="{Binding Time}"/>
+		<TextBox Grid.Row="3" Grid.Column="1" Watermark="HH:mm:ss" Text="{Binding RepeatPeriod}"/>
+		<StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
+			<Button Command="{Binding OkCommand}" Content="Ok"/>
+			<Button Click="OnCloseClick" Content="Cancel"/>
+		</StackPanel>
+	</Grid>
+</Window>

@@ -43,4 +43,4 @@ message GetEventsRequest {
 
 message UserResponse {
 	repeated Event reminders = 1;
-} 
+}

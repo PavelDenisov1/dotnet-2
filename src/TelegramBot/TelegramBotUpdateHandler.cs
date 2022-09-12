@@ -41,7 +41,7 @@ namespace TelegramBot
                 _usersRepository.AddUser(newUser);
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
-                    text: "You are added.",
+                    text: $"You are added. Your code: {update.Message.From.Id}",
                     cancellationToken: cancellationToken);
             }
         }
